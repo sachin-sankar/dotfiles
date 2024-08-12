@@ -15,7 +15,7 @@
 		"tray",
     "memory",
 		"battery",
-		"backlight",
+    "backlight",
 		"pulseaudio"
 	],
 
@@ -83,5 +83,11 @@
 			"car": "",
 			"default": ["", "", ""]
 		}
-	}
+	},
+  "memory":{
+    "interval":1,
+    "tooltip":true,
+    "format":"🧠 {percentage}%",
+    "tooltip-format":"{used}/{total} GiB"
+  }
 }

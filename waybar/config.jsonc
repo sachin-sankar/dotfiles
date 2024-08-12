@@ -8,14 +8,12 @@
 	"height": 0,
 	"modules-left": [
 		"clock",
-		"custom/weather",
 		"hyprland/workspaces"
 	],
 	"modules-center": ["hyprland/window"],
 	"modules-right": [
 		"tray",
-		"custom/updates",
-		"custom/language",
+    "memory",
 		"battery",
 		"backlight",
 		"pulseaudio"
@@ -40,14 +38,6 @@
 			"9": [],
 			"10": []
 		}
-	},
-	"custom/updates": {
-		"format": "⟱ {}",
-		"interval": 7200,                     
-		"exec": "i=$(checkupdates); echo \"$i\" |wc -l; echo \"$i\" |column -t |tr '\n' '\r'",       
-		"exec-if": "exit 0",                  
-		"on-click": "kitty -e sudo pacman -Suuy", 
-		"signal": 8
 	},
 	"tray": {
 		"icon-size": 13,

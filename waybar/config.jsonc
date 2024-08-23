@@ -5,8 +5,8 @@
 	"exclusive": true,
 	"passthrough": false,
 	"gtk-layer-shell": true,
-	"height": 0,
-	"modules-left": [
+	"spacing": 6,
+  "modules-left": [
 		"clock",
 		"hyprland/workspaces"
 	],
@@ -44,7 +44,7 @@
 		"spacing": 10
 	},
 	"clock": {
-		"format": "🕑 {:%R 📅 %d/%m}",
+		"format": "⏲ {:%R 🗓 %d/%m}",
 		"timezone":"Asia/Kolkata"
 	},
 	"backlight": {
@@ -87,7 +87,7 @@
   "memory":{
     "interval":1,
     "tooltip":true,
-    "format":"🧠 {percentage}%",
+    "format":"🞖 {percentage}%",
     "tooltip-format":"{used}/{total} GiB"
   }
 }

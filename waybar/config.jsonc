@@ -45,7 +45,6 @@
 	},
 	"clock": {
 		"format": "⏲ {:%R 🗓 %d/%m}",
-		"timezone":"Asia/Kolkata"
 	},
 	"backlight": {
 		"device": "intel_backlight",

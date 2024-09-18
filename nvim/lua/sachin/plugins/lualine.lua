@@ -7,7 +7,7 @@ return {
 
 		lualine.setup({
 			options = {
-				theme = "tokyodark",
+				theme = "onedark_dark",
 				icons_enabled = true,
 			},
 			sections = {

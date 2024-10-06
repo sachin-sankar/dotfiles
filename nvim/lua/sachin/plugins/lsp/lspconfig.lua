@@ -5,8 +5,8 @@ return {
 		"ms-jpq/coq_nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
-	"williamboman/mason.nvim",
-  },
+		"williamboman/mason.nvim",
+	},
 	config = function()
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
@@ -112,6 +112,7 @@ return {
 					capabilities = capabilities,
 					filetypes = {
 						"html",
+						"typescript",
 						"typescriptreact",
 						"javascriptreact",
 						"css",

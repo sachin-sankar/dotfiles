@@ -29,12 +29,23 @@ return {
 				"html",
 				"cssls",
 				"tailwindcss",
-				"svelte",
 				"lua_ls",
 				"graphql",
 				"emmet_ls",
 				"prismals",
 				"pyright",
+				"css_variables",
+				"cssmodules_ls",
+				"docker_compose_language_service",
+				"dockerls",
+				"graphql",
+				"markdown_oxide",
+				"rust_analyzer",
+				"ts_ls",
+				"yamlls",
+				"eslint",
+				"golangci_lint_ls",
+				"jsonls",
 			},
 		})
 
@@ -44,7 +55,10 @@ return {
 				"stylua", -- lua formatter
 				"black", -- python formatter
 				"pylint", -- python linter
-				"eslint_d", -- js linter
+				"eslint_d",
+				"jsonlint",
+				"markdownlint",
+				"yamllint",
 			},
 		})
 	end,

@@ -47,6 +47,7 @@ return {
 				"golangci_lint_ls",
 				"jsonls",
 			},
+			automatic_installation = true,
 		})
 
 		mason_tool_installer.setup({
@@ -60,6 +61,7 @@ return {
 				"markdownlint",
 				"yamllint",
 			},
+			automatic_installation = true,
 		})
 	end,
 }

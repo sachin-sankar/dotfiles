@@ -1,0 +1,13 @@
+[Configuration]
+LastActiveMode=THUNAR_RENAMER_MODE_BOTH
+LastActiveRenamer=ThunarSbrCaseRenamer
+
+[ThunarSbrNumberRenamer]
+TextMode=THUNAR_SBR_TEXT_MODE_TN
+Text=Image\ 
+Mode=THUNAR_SBR_NUMBER_MODE_123
+Start=1
+
+[ThunarSbrCaseRenamer]
+Mode=THUNAR_SBR_CASE_RENAMER_MODE_LOWER
+

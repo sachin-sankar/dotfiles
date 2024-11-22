@@ -1,0 +1,49 @@
+theme = "ayu_evolve"
+
+[editor]
+line-number = "relative"
+mouse = false
+cursorline = true
+preview-completion-insert = false
+completion-timeout = 5
+color-modes = true
+
+[editor.statusline]
+left = ["mode", "file-name","version-control","spacer","diagnostics"]
+center = []
+right = ["position","file-type"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'"' = '"'
+'`' = '`'
+'<' = '>'
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.auto-save]
+focus-lost = true
+
+[keys.normal.space]
+f = "file_picker_in_current_directory"
+F = "file_picker"
+
+[keys.normal]
+C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw", ":reload"]

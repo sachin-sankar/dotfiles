@@ -1,19 +1,18 @@
 [[language]]
-name = 'python'
-language-servers = ["pyright", "ruff", "pylyzer"]
+name = "python"
+language-servers = [ "basedpyright", "ruff" ]
 formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
 auto-format = true
 
-[language-server.pyright.config.python.analysis]
-typeCheckingMode = "basic"
-
 [language-server.ruff]
-command = "ruff"
-args = ["server"]
+command = "ruff-lsp"
+[language-server.ruff.config.settings]
+args = ["--ignore", "E501"]
 
-[language-server.pylyzer]
-command = "pylyzer"
-args = ["--server"]
+[language-server.basedpyright.config]
+reportMissingTypeStubs = false
+basedpyright.analysis.diagnosticSeverityOverrides.reportImplicitRelativeImport = false
+basedpyright.analysis.diagnosticSeverityOverrides.reportUnknownMemberType = false
 
 [language-server.emmet-lsp]
 command = "emmet-language-server"

@@ -103,3 +103,4 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias hyprconfig="nvim ~/.config/hypr/hyprland.conf"
+alias hx="helix"

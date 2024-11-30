@@ -13,6 +13,7 @@ args = ["--ignore", "E501"]
 reportMissingTypeStubs = false
 basedpyright.analysis.diagnosticSeverityOverrides.reportImplicitRelativeImport = false
 basedpyright.analysis.diagnosticSeverityOverrides.reportUnknownMemberType = false
+basedpyright.analysis.diagnosticSeverityOverrides.reportMissingTypeStubs = false
 
 [language-server.emmet-lsp]
 command = "emmet-language-server"

@@ -46,4 +46,4 @@ f = "file_picker_in_current_directory"
 F = "file_picker"
 
 [keys.normal]
-C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw", ":reload"]
+C-g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw", ":reload",":reload-all"]

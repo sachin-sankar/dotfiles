@@ -1,19 +1,21 @@
 [[language]]
 name = "python"
-language-servers = [ "basedpyright", "ruff" ]
-formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
+language-servers = [ "pyright", "ruff" ]
+formatter = {command='ruff',args=["format","-"]}
 auto-format = true
 
-[language-server.ruff]
-command = "ruff-lsp"
-[language-server.ruff.config.settings]
-args = ["--ignore", "E501"]
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
 
-[language-server.basedpyright.config]
-reportMissingTypeStubs = false
-basedpyright.analysis.diagnosticSeverityOverrides.reportImplicitRelativeImport = false
-basedpyright.analysis.diagnosticSeverityOverrides.reportUnknownMemberType = false
-basedpyright.analysis.diagnosticSeverityOverrides.reportMissingTypeStubs = false
+# if you choose `ruff` itself
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[[language]]
+name = "go"
+auto-format = true
+formatter = { command = "goimports" }
 
 [language-server.emmet-lsp]
 command = "emmet-language-server"

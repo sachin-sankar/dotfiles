@@ -1,4 +1,4 @@
-theme = "ayu_evolve"
+theme = "ao"
 
 [editor]
 line-number = "relative"
@@ -7,6 +7,9 @@ cursorline = true
 preview-completion-insert = false
 completion-timeout = 5
 color-modes = true
+
+[editor.inline-diagnostics]
+cursor-line = "warning" # show warnings and errors on the cursorline inline
 
 [editor.statusline]
 left = ["mode", "file-name","version-control","spacer","diagnostics"]
@@ -21,9 +24,9 @@ mode.select = "SELECT"
 '(' = ')'
 '{' = '}'
 '[' = ']'
-'"' = '"'
 '`' = '`'
 '<' = '>'
+'"' = '"'
 
 [editor.indent-guides]
 render = true

@@ -102,6 +102,9 @@ eval "$(starship init zsh)"
 alias hx='helix'
 alias ls='lsd'
 alias l='ls -l'
+alias uhx='uv run helix'
+alias update='paru -Suuy --sudoloop --noconfirm'
+alias movie='ls ~/Videos/Movies | fzf --bind "enter:become(vlc ~/Videos/Movies/{} -f --start-paused --video-on-top )"'
 
 # pnpm
 export PNPM_HOME="/home/sachin/.local/share/pnpm"
@@ -113,3 +116,7 @@ esac
 
 export PATH="$HOME/go/bin:$PATH"
 export GPG_TTY=$(tty)
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/sachin/.lmstudio/bin"
+export PATH="$PATH:/home/sachin/.cargo/bin"

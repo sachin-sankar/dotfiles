@@ -3,7 +3,7 @@ show_hidden = true
 
 [opener]
 edit = [
-	{ run = 'helix "$@"', block = true },
+	{ run = 'nvim "$@"', orphan = true },
 ]
 play = [
 	{ run = 'vlc "$@"', orphan = true, for = "unix" },

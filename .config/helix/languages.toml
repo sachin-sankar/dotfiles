@@ -79,3 +79,15 @@ gofumpt = true
 
 [language-server.golangci-lint-lsp.config]
 command = ["golangci-lint", "run", "--output.json.path=stdout", "--show-stats=false", "--issues-exit-code=1"]
+
+[[language]]
+name = "latex"
+formatter = { command = 'tex-fmt', args = ["--stdin"] }
+auto-format = true
+
+[language-server.texlab.config.texlab.build]
+onSave = true
+executable = "pdflatex"
+
+[language-server.texlab.config.texlab.forwardSearch]
+executable = "zathura"

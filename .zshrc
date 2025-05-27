@@ -99,10 +99,9 @@ eval "$(starship init zsh)"
 # - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 
-alias hx='helix'
-alias ls='lsd'
+alias ls='lsd -a'
 alias l='ls -l'
-alias uhx='uv run helix'
+alias uvim='uv run nvim'
 alias update='paru -Suuy --sudoloop --noconfirm'
 alias movie='ls ~/Videos/Movies | fzf --bind "enter:become(vlc ~/Videos/Movies/{} -f --start-paused --video-on-top )"'
 

@@ -103,6 +103,7 @@ alias ls='lsd -a'
 alias l='ls -l'
 alias uvim='uv run nvim'
 alias update='paru -Suuy --sudoloop --noconfirm'
+alias upgrade='sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && update'
 alias movie='ls ~/Videos/Movies | fzf --bind "enter:become(vlc ~/Videos/Movies/{} -f --start-paused --video-on-top )"'
 
 # pnpm

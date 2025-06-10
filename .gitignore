@@ -1,7 +1,6 @@
 /*
 !/.gitignore
-!/nvim
-!/hypr
+!/.config/nvim
 !/kitty
 !/rofi
 !/swaylock

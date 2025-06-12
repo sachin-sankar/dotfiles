@@ -4,6 +4,22 @@ return {
     main = 'ibl',
     ---@module "ibl"
     ---@type ibl.config
-    opts = {},
+    opts = {
+      indent = { char = '▏' },
+      exclude = {
+        filetypes = {
+          'Trouble',
+          'alpha',
+          'dashboard',
+          'help',
+          'lazy',
+          'mason',
+          'neo-tree',
+          'notify',
+          'toggleterm',
+          'trouble',
+        },
+      },
+    },
   },
 }

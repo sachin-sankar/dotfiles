@@ -35,7 +35,7 @@ return {
       -- Be aware that you also will need to properly configure your LSP server to
       -- provide the inlay hints.
       inlay_hints = {
-        enabled = true,
+        enabled = false,
         exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
       },
       -- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
@@ -89,8 +89,172 @@ return {
           },
         },
         pyright = {},
-        ruff = {},
-        gopls = {},
+        ruff = {
+          cmd_env = { RUFF_TRACE = "messages" },
+          init_options = {
+            settings = {
+              logLevel = "error",
+            },
+          },
+          keys = {
+            {
+              "<leader>co",
+              LazyVim.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+          },
+        },
+        gopls = {
+          settings = {
+            gopls = {
+              gofumpt = true,
+              codelenses = {
+                gc_details = false,
+                generate = true,
+                regenerate_cgo = true,
+                run_govulncheck = true,
+                test = true,
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true,
+              },
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+              analyses = {
+                nilness = true,
+                unusedparams = true,
+                unusedwrite = true,
+                useany = true,
+              },
+              usePlaceholders = true,
+              completeUnimported = true,
+              staticcheck = true,
+              directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+              semanticTokens = true,
+            },
+          },
+        },
+        eslint = {
+          settings = {
+            -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
+            workingDirectories = { mode = "auto" },
+            format = auto_format,
+          },
+        },
+        tsserver = {
+          enabled = false,
+        },
+        ts_ls = {
+          enabled = false,
+        },
+        vtsls = {
+          -- explicitly add default filetypes, so that we can extend
+          -- them in related extras
+          filetypes = {
+            "javascript",
+            "javascriptreact",
+            "javascript.jsx",
+            "typescript",
+            "typescriptreact",
+            "typescript.tsx",
+          },
+          settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+            },
+            typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+          },
+          keys = {
+            {
+              "gD",
+              function()
+                local params = vim.lsp.util.make_position_params()
+                LazyVim.lsp.execute({
+                  command = "typescript.goToSourceDefinition",
+                  arguments = { params.textDocument.uri, params.position },
+                  open = true,
+                })
+              end,
+              desc = "Goto Source Definition",
+            },
+            {
+              "gR",
+              function()
+                LazyVim.lsp.execute({
+                  command = "typescript.findAllFileReferences",
+                  arguments = { vim.uri_from_bufnr(0) },
+                  open = true,
+                })
+              end,
+              desc = "File References",
+            },
+            {
+              "<leader>co",
+              LazyVim.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+            {
+              "<leader>cM",
+              LazyVim.lsp.action["source.addMissingImports.ts"],
+              desc = "Add missing imports",
+            },
+            {
+              "<leader>cu",
+              LazyVim.lsp.action["source.removeUnused.ts"],
+              desc = "Remove unused imports",
+            },
+            {
+              "<leader>cD",
+              LazyVim.lsp.action["source.fixAll.ts"],
+              desc = "Fix all diagnostics",
+            },
+            {
+              "<leader>cV",
+              function()
+                LazyVim.lsp.execute({ command = "typescript.selectTypeScriptVersion" })
+              end,
+              desc = "Select TS workspace version",
+            },
+          },
+        },
+        tailwindcss = {
+          -- exclude a filetype from the default_config
+          filetypes_exclude = { "markdown" },
+          -- add additional filetypes to the default_config
+          filetypes_include = {},
+          -- to fully override the default_config, change the below
+          -- filetypes = {}
+        },
+        dockerls = {},
+        docker_compose_language_service = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
@@ -103,6 +267,96 @@ return {
         -- end,
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
+        eslint = function()
+          if not auto_format then
+            return
+          end
+
+          local function get_client(buf)
+            return LazyVim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
+          end
+
+          local formatter = LazyVim.lsp.formatter({
+            name = "eslint: lsp",
+            primary = false,
+            priority = 200,
+            filter = "eslint",
+          })
+
+          -- Use EslintFixAll on Neovim < 0.10.0
+          if not pcall(require, "vim.lsp._dynamic") then
+            formatter.name = "eslint: EslintFixAll"
+            formatter.sources = function(buf)
+              local client = get_client(buf)
+              return client and { "eslint" } or {}
+            end
+            formatter.format = function(buf)
+              local client = get_client(buf)
+              if client then
+                local diag = vim.diagnostic.get(buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+                if #diag > 0 then
+                  vim.cmd("EslintFixAll")
+                end
+              end
+            end
+          end
+
+          -- register the formatter with LazyVim
+          LazyVim.format.register(formatter)
+        end,
+        tsserver = function()
+          -- disable tsserver
+          return true
+        end,
+        ts_ls = function()
+          -- disable tsserver
+          return true
+        end,
+        tailwindcss = function(_, opts)
+          local tw = LazyVim.lsp.get_raw_config("tailwindcss")
+          opts.filetypes = opts.filetypes or {}
+
+          -- Add default filetypes
+          vim.list_extend(opts.filetypes, tw.default_config.filetypes)
+
+          -- Remove excluded filetypes
+          --- @param ft string
+          opts.filetypes = vim.tbl_filter(function(ft)
+            return not vim.tbl_contains(opts.filetypes_exclude or {}, ft)
+          end, opts.filetypes)
+
+          -- Additional settings for Phoenix projects
+          opts.settings = {
+            tailwindCSS = {
+              includeLanguages = {
+                elixir = "html-eex",
+                eelixir = "html-eex",
+                heex = "html-eex",
+              },
+            },
+          }
+
+          -- Add additional filetypes
+          vim.list_extend(opts.filetypes, opts.filetypes_include or {})
+        end,
+        gopls = function(_, opts)
+          -- workaround for gopls not supporting semanticTokensProvider
+          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+          LazyVim.lsp.on_attach(function(client, _)
+            if not client.server_capabilities.semanticTokensProvider then
+              local semantic = client.config.capabilities.textDocument.semanticTokens
+              client.server_capabilities.semanticTokensProvider = {
+                full = true,
+                legend = {
+                  tokenTypes = semantic.tokenTypes,
+                  tokenModifiers = semantic.tokenModifiers,
+                },
+                range = true,
+              }
+            end
+          end, "gopls")
+          -- end workaround
+        end,
       },
     }
     return ret

@@ -3,3 +3,4 @@
 -- Add any additional options here
 
 vim.g.ai_cmp = false
+vim.opt.clipboard = ""

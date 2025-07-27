@@ -4,3 +4,4 @@
 
 vim.g.ai_cmp = false
 vim.opt.clipboard = ""
+vim.o.cursorline = false

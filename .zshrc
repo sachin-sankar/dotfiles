@@ -101,7 +101,7 @@ eval "$(starship init zsh)"
 
 alias ls='lsd -a'
 alias l='ls -l'
-alias update='paru -Suuy --sudoloop --noconfirm'
+alias update='paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm'
 alias upgrade='sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && update'
 alias movie='ls ~/Videos/Movies | fzf --bind "enter:become(mpv ~/Videos/Movies/{} --fullscreen=yes --pause=yes )"'
 

@@ -100,11 +100,13 @@ eval "$(starship init zsh)"
 # For a full list of active aliases, run `alias`.
 
 alias ls='lsd -a'
-alias l='ls -l'
+alias l='ls'
 alias update='paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm'
 alias upgrade='sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && update'
-alias movie='ls ~/Videos/Movies | fzf --bind "enter:become(mpv ~/Videos/Movies/{} --fullscreen=yes --pause=yes )"'
 alias yd='yt-dlp --sponsorblock-remove sponsor -f "bestvideo[height<=1440]+bestaudio/best[height<=1440]" --embed-chapters'
+alias markalldown='find . -maxdepth 1 -type f -exec bash -c '\''markitdown "$1" -o "${1%.*}.md"'\'' _ {} \;'
+alias rmfootnotes='find . -name "*.md" -type f -exec sed -i -e '\''s/\[\^\w*\]//g'\'' -e '\''s/^\[\^\w*\]:.*$//g'\'' -e '\''s/\^\[[^\]]*\]//g'\'' {} \;'
+
 
 # pnpm
 export PNPM_HOME="/home/sachin/.local/share/pnpm"
@@ -120,3 +122,11 @@ export GPG_TTY=$(tty)
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/sachin/.lmstudio/bin"
 export PATH="$PATH:/home/sachin/.cargo/bin"
+export PATH="$PATH:/home/sachin/scripts"
+
+# bun completions
+[ -s "/home/sachin/.bun/_bun" ] && source "/home/sachin/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

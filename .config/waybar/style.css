@@ -1,61 +1,107 @@
 * {
+  border: none;
   font-family: "JetBrainsMono NF";
-  font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 window#waybar {
-  background: rgba(0, 0, 0, 50);
-  color: #cdd6f4;
-}
-
-tooltip {
-  background: #1e1e2e;
-  border-radius: 10px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #11111b;
+  background-color: #000000;
 }
 
 #workspaces button {
-  color: #313244;
+  padding: 0px;
+  margin: 4px 0 6px 0;
+  color: #ffffff;
+  min-width: 36px;
 }
 
 #workspaces button.active {
-  color: #a6adc8;
-}
-
-#workspaces button.focused {
-  color: #a6adc8;
-  background: #eba0ac;
+  margin: 4px 0 6px 0;
+  background-color: #ffdead;
+  color: #303030;
+  min-width: 36px;
 }
 
 #workspaces button.urgent {
-  color: #11111b;
-  background: #a6e3a1;
+  color: red;
 }
 
-#workspaces button:hover {
-  background: #11111b;
-  color: #cdd6f4;
+#custom-wmname {
+  color: #1cb4ff;
+  font-size: 22px;
 }
 
-#window,
-#clock,
-#battery,
-#pulseaudio,
-#workspaces,
-#tray,
-#memory,
+#custom-warp.connected {
+  color: #f48120;
+}
+
+#custom-warp.connecting {
+  color: #ffd700;
+  animation-name: blinker;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+#custom-warp.disconnected {
+  color: #ff0000;
+}
+
+@keyframes blinker {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#battery {
+  color: #4cbb17;
+}
+
+#battery.warning {
+  color: #f08000;
+}
+#battery.critical {
+  color: #ff0000;
+}
+
+#memory {
+  color: #da70d6;
+}
+
+#memory.warning {
+  color: #f08000;
+}
+#memory.critical {
+  color: #ff0000;
+}
+
 #backlight {
-  padding: 0px 10px;
+  color: #f4c430;
 }
 
-#workspaces {
-  padding-bottom: 7px;
-  border-width: 0px 0px 0px 0px;
+#pulseaudio {
+  color: #40b5ad;
 }
 
-#backlight {
-  margin-top: 5px;
+#pulseaudio.muted {
+  color: #dc143c;
+}
+
+#network {
+  color: #00a36c;
+}
+
+#network.disconnected,
+#network.disabled {
+  color: #ff0000;
+}
+
+#clock {
+  color: #ffdead;
 }

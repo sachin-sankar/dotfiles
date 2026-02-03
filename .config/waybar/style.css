@@ -17,8 +17,8 @@ window#waybar {
 
 #workspaces button.active {
   margin: 4px 0 6px 0;
-  background-color: #ffdead;
-  color: #303030;
+  background-color: #303030;
+  color: #ffffff;
   min-width: 36px;
 }
 
@@ -103,5 +103,5 @@ window#waybar {
 }
 
 #clock {
-  color: #ffdead;
+  color: #ffffff;
 }

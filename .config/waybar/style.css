@@ -26,6 +26,12 @@ window#waybar {
   color: red;
 }
 
+#custom-internet,
+#custom-warp,
+#network {
+  padding-right: 5px;
+}
+
 #custom-wmname {
   color: #1cb4ff;
   font-size: 22px;
@@ -104,4 +110,12 @@ window#waybar {
 
 #clock {
   color: #ffffff;
+}
+
+#custom-internet.connected {
+  color: #4cbb17;
+}
+
+#custom-internet.disconnected {
+  color: #fc0000;
 }

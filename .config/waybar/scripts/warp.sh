@@ -14,18 +14,15 @@ if [[ "$STATE" == "Connected" ]]; then
   ICON="󰅟" # Or use "VPN"
   CLASS="connected"
   TEXT="WARP: $HEALTH"
-  STATE="CONN"
 elif [[ "$STATE" == "Connecting" ]]; then
   ICON="󰔪"
   CLASS="connecting"
   TEXT="Connecting..."
-  STATE="CONP"
 else
   ICON="󰧠"
   CLASS="disconnected"
   TEXT="Disconnected"
-  STATE="NCON"
 fi
 
 # Output JSON for Waybar
-printf '{"text": "%s %s", "alt": "%s", "tooltip": "%s", "class": "%s"}\n' "$ICON" "$STATE" "$STATE" "$TEXT" "$CLASS"
+printf '{"text": "%s", "alt": "%s", "tooltip": "%s", "class": "%s"}\n' "$ICON" "$STATE" "$TEXT" "$CLASS"

@@ -1,0 +1,7 @@
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "dc61636"
+hash = "2fa34959353b6f1a1c33659f50e098fd"
+
+[flavor]
+deps = []

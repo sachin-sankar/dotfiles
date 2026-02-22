@@ -28,6 +28,7 @@ window#waybar {
 
 #custom-internet,
 #custom-warp,
+#power-profiles-daemon,
 #network {
   padding-right: 5px;
 }
@@ -118,4 +119,15 @@ window#waybar {
 
 #custom-internet.disconnected {
   color: #fc0000;
+}
+
+#power-profiles-daemon.performance {
+  color: #da70d6;
+}
+#power-profiles-daemon.balanced {
+  color: #4fc3f7;
+  padding-right: 7px;
+}
+#power-profiles-daemon.power-saver {
+  color: #4cbb17;
 }

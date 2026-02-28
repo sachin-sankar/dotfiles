@@ -1,5 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+fpath=(~/.zsh/completions $fpath)
+autoload -Uz compinit
+compinit
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -118,15 +121,3 @@ esac
 
 export PATH="$HOME/go/bin:$PATH"
 export GPG_TTY=$(tty)
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/sachin/.lmstudio/bin"
-export PATH="$PATH:/home/sachin/.cargo/bin"
-export PATH="$PATH:/home/sachin/scripts"
-
-# bun completions
-[ -s "/home/sachin/.bun/_bun" ] && source "/home/sachin/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"

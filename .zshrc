@@ -120,4 +120,5 @@ esac
 # pnpm end
 
 export PATH="$HOME/go/bin:$PATH"
+export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 export GPG_TTY=$(tty)

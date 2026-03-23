@@ -104,9 +104,10 @@ eval "$(starship init zsh)"
 
 alias ls='lsd -a'
 alias l='ls'
-alias update='paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm'
+alias update='paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm && pnpm -g upgrade && pnpm -g update && uv tool upgrade --all'
 alias upgrade='sudo reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && update'
 alias yd='yt-dlp --sponsorblock-remove sponsor -f "bestvideo[height<=1440]+bestaudio/best[height<=1440]" --embed-chapters'
+alias ydc='yt-dlp -f "bv*+ba/b" --cookies-from-browser firefox:~/.zen'
 alias markalldown='find . -maxdepth 1 -type f -exec bash -c '\''markitdown "$1" -o "${1%.*}.md"'\'' _ {} \;'
 alias rmfootnotes='find . -name "*.md" -type f -exec sed -i -e '\''s/\[\^\w*\]//g'\'' -e '\''s/^\[\^\w*\]:.*$//g'\'' -e '\''s/\^\[[^\]]*\]//g'\'' {} \;'
 

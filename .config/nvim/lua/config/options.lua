@@ -5,3 +5,4 @@
 vim.g.ai_cmp = false
 vim.opt.clipboard = ""
 vim.o.cursorline = false
+vim.g.lazyvim_ts_lsp = "tsgo"

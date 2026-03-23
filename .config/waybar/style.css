@@ -28,8 +28,7 @@ window#waybar {
 
 #custom-internet,
 #custom-warp,
-#power-profiles-daemon,
-#network {
+#power-profiles-daemon{
   padding-right: 5px;
 }
 
@@ -98,15 +97,6 @@ window#waybar {
 
 #pulseaudio.muted {
   color: #dc143c;
-}
-
-#network {
-  color: #00a36c;
-}
-
-#network.disconnected,
-#network.disabled {
-  color: #ff0000;
 }
 
 #clock {

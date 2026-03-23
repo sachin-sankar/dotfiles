@@ -2,20 +2,23 @@
   "layer": "top",
   "position": "top",
   "spacing": 12,
-  "modules-left": ["custom/wmname", "clock"],
-  "modules-center": ["hyprland/workspaces"],
+  "modules-left": [
+    "custom/wmname",
+    "clock"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
   "modules-right": [
     "tray",
     "battery",
     "power-profiles-daemon",
     "custom/internet",
     "custom/warp",
-    "network",
     "memory",
     "backlight",
     "pulseaudio",
   ],
-
   "custom/wmname": {
     "format": " 󰣇 ",
     "tooltip": false,
@@ -46,7 +49,18 @@
   },
   "backlight": {
     "format": "{icon} {percent}%",
-    "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"],
+    "format-icons": [
+      "󱩎",
+      "󱩏",
+      "󱩐",
+      "󱩑",
+      "󱩒",
+      "󱩓",
+      "󱩔",
+      "󱩕",
+      "󱩖",
+      "󰛨"
+    ],
     "on-scroll-down": "brightnessctl -c backlight set 1%-",
     "on-scroll-up": "brightnessctl -c backlight set +1%",
     "on-click-right": "brightnessctl -c backlight set 0%",
@@ -61,14 +75,18 @@
     "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
     "format-full": "󱟢",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
+    "format-icons": [
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂"
+    ],
     "tooltip": false,
-  },
-  "network": {
-    "format-wifi": "󰖩",
-    "format-ethernet": "{ifname} {ipaddr}/{cidr}",
-    "format-disconnected": "󰖪",
-    "tooltip-format": "{essid}: {ipaddr}\n󱑽 {frequency} 󰣸 {signalStrength}%",
   },
   "power-profiles-daemon": {
     "format": "{icon}",

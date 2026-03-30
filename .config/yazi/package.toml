@@ -1,7 +1,12 @@
 [[plugin.deps]]
 use = "boydaihungst/mediainfo"
-rev = "dc61636"
-hash = "2fa34959353b6f1a1c33659f50e098fd"
+rev = "a7febc0"
+hash = "5093ac06d5a80b5fe4f1d5f6db86fd30"
+
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "46a6b9f"
+hash = "771af2becc575a3f43d0542de823969d"
 
 [flavor]
 deps = []

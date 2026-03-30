@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Ensure gum and glow are installed
+if ! command -v gum &>/dev/null || ! command -v glow &>/dev/null; then
+  echo "Error: This script requires 'gum' and 'glow'. Please install them first."
+  echo "Run: paru -S gum glow"
+  exit 1
+fi
+
+# 1. Check if a package name was provided. If not, use gum filter.
+if [ -z "$1" ]; then
+  # gum filter replaces fzf and fits the styling ecosystem natively
+  PACKAGE=$(paru -Qq | gum filter --placeholder "Search for an installed package..." --height 15)
+
+  # If the user aborts gum filter (Ctrl+C), exit silently
+  [ -z "$PACKAGE" ] && exit 0
+else
+  PACKAGE="$1"
+fi
+
+# 2. Extract the URL from paru
+URL=$(paru -Qi "$PACKAGE" | awk '/^URL/ {print $3}')
+
+# If no URL is found at all, exit early
+if [ -z "$URL" ]; then
+  gum style --foreground 196 "✖ No URL found for package: $PACKAGE"
+  exit 1
+fi
+
+# Define a temporary file to hold the downloaded changelog
+TMP_CHANGELOG=$(mktemp)
+
+# 3. Handle GitHub Repositories
+if [[ "$URL" =~ github\.com ]]; then
+  REPO_PATH=$(echo "$URL" | sed -E 's|https://github.com/([^/]+)/([^/]+).*|\1/\2|')
+
+  # We use gum spin to hold the screen with a loading animation during the API call
+  gum spin --spinner dot --title "Connecting to GitHub..." -- \
+    bash -c "curl -s 'https://api.github.com/repos/$REPO_PATH/releases/latest' | jq -r '.body' > '$TMP_CHANGELOG'"
+
+# 4. Handle GitLab Repositories
+elif [[ "$URL" =~ gitlab\. ]]; then
+  REPO_PATH=$(echo "$URL" | sed -E 's|https://gitlab\.[^/]+/||' | sed 's|/$||')
+  ENCODED_PATH=$(echo "$REPO_PATH" | sed 's|/|%2F|g')
+
+  gum spin --spinner dot --title "Connecting to GitLab..." -- \
+    bash -c "curl -s 'https://gitlab.com/api/v4/projects/$ENCODED_PATH/releases' | jq -r '.[0].description' > '$TMP_CHANGELOG'"
+
+# 5. Fallback for unsupported domains
+else
+  gum style --foreground 208 "⚠ Domain not supported for automated changelogs."
+  rm -f "$TMP_CHANGELOG"
+  exit 0
+fi
+
+# 6. Render the output
+# Check if the temporary file is empty or contains "null" (meaning no actual release notes found)
+if [ ! -s "$TMP_CHANGELOG" ] || [ "$(cat "$TMP_CHANGELOG")" == "null" ]; then
+  gum style --foreground 208 "ℹ No release notes available for the latest version."
+else
+  # Output file straight to glow
+  cat "$TMP_CHANGELOG" | glow
+fi
+
+# Clean up
+rm -f "$TMP_CHANGELOG"

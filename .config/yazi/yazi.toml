@@ -27,6 +27,18 @@ prepend_previewers = [
 image_alloc = 1073741824 # = 1024*1024*1024 = 1024MB
 
 [opener]
-edit = [{ run = 'nvim "$@"', orphan = true }]
+edit = [{ run = 'nvim "$@"', orphan = true, block = true }]
 play = [{ run = 'mpv "$@"', orphan = true, for = "unix" }]
-open = [{ run = 'xdg-open "$@"', desc = "Open" }]
+
+[open]
+rules = [
+  # Text and code files → nvim
+  { mime = "text/*", use = "edit" },
+  { mime = "application/json", use = "edit" },
+  { mime = "application/xml", use = "edit" },
+  { mime = "application/javascript", use = "edit" },
+  { mime = "video/webm", use = "play" },
+  { mime = "video/mkv", use = "play" },
+  { mime = "video/mp4", use = "play" },
+  { mime = "inode/x-empty", use = "edit" },          # empty files
+]

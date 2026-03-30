@@ -1,0 +1,10 @@
+set -euo pipefail
+sudo echo "Starting Update"
+if gum confirm "Update pacman Mirrors?"; then
+  gum spin --title "Updating pacman Mirrors" --show-stderr -- rate-mirrors --entry-country=IN --disable-comments-in-file --save ~/mirrorlist arch
+  sudo cp ~/mirrorlist /etc/pacman.d/mirrorlist
+fi
+
+paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm
+pnpm -g upgrade && pnpm -g update
+uv tool upgrade --all

@@ -1,48 +1,100 @@
 #!/bin/bash
 
-LIST_FILE="$HOME/.backuplist"
+LIST_FILE="$HOME/.resticinclude"
 
-if [[ ! -f "$LIST_FILE" ]]; then
-  echo "Error: Configuration file '$LIST_FILE' not found."
+# Ensure gum and numfmt are installed
+if ! command -v gum &>/dev/null || ! command -v numfmt &>/dev/null; then
+  echo "Error: This script requires 'gum' and 'numfmt' (coreutils)."
   exit 1
 fi
 
-echo -e "Size\t\tPath"
-echo -e "------------------------------------------"
+# Create temporary files for handling the spin background subshell
+TMP_OUTPUT=$(mktemp)
+TMP_TOTAL=$(mktemp)
 
-total_bytes=0
+# Cleanup trap: Ensures temp files are deleted even if the script is interrupted
+cleanup() {
+  rm -f "$TMP_OUTPUT" "$TMP_TOTAL"
+}
+trap cleanup EXIT
 
-while IFS= read -r item || [[ -n "$item" ]]; do
-  # Skip empty lines or comments
-  [[ -z "$item" || "$item" =~ ^# ]] && continue
+# Check if configuration file exists
+if [[ ! -f "$LIST_FILE" ]]; then
+  gum style --foreground 208 "⚠ Configuration file '$LIST_FILE' not found."
 
-  if [[ -e "$item" ]]; then
-    # Get bytes - using 'stat' for files and 'du' for dirs is more reliable
-    if [[ -d "$item" ]]; then
-      # -s: summary only, -b: bytes
-      bytes=$(du -sb "$item" 2>/dev/null | cut -f1)
-    else
-      # -c %s: just the size in bytes
-      bytes=$(stat -c %s "$item" 2>/dev/null)
-    fi
-
-    # Skip if we couldn't read the size
-    [[ -z "$bytes" ]] && bytes=0
-
-    # Convert the individual item to human-readable (Decimal)
-    human_size=$(numfmt --to=si --suffix=B "$bytes")
-
-    echo -e "$human_size\t\t$item"
-
-    # Add to total
-    total_bytes=$((total_bytes + bytes))
+  # Interactive fallback: Ask to create it!
+  if gum confirm "Would you like to create a template file now?"; then
+    echo "# Add files, directories, or patterns to back up" >"$LIST_FILE"
+    echo "$HOME/Documents" >>"$LIST_FILE"
+    echo "$HOME/.config" >>"$LIST_FILE"
+    echo "$HOME/*.pdf" >>"$LIST_FILE"
+    gum style --foreground 82 "✔ Created $LIST_FILE with example paths."
   else
-    echo -e "N/A\t\t$item (Not Found)"
+    exit 1
   fi
-done <"$LIST_FILE"
+fi
 
-# Convert total to Decimal (MB/GB)
+# Use gum spin to show a loading state while processing files
+gum spin --spinner line --title "Analyzing file sizes..." -- bash -c "
+    total_bytes=0
+    
+    while IFS= read -r pattern || [[ -n \"\$pattern\" ]]; do
+        # Skip empty lines or comments
+        [[ -z \"\$pattern\" || \"\$pattern\" =~ ^# ]] && continue
+
+        # Expand the glob pattern (e.g., handles wildcards like *.pdf)
+        # We use a subshell to prevent glob failures from killing the script
+        matched_items=(\$pattern)
+        
+        # If the pattern didn't match anything and still contains a wildcard, skip it
+        if [[ \"\${matched_items[0]}\" == \"\$pattern\" && ! -e \"\$pattern\" ]]; then
+             echo -e \"N/A\t\$pattern (No Matches)\" >> '$TMP_OUTPUT'
+             continue
+        fi
+
+        for item in \"\${matched_items[@]}\"; do
+            if [[ -e \"\$item\" ]]; then
+                # Get bytes
+                if [[ -d \"\$item\" ]]; then
+                    bytes=\$(du -sb \"\$item\" 2>/dev/null | cut -f1)
+                else
+                    bytes=\$(stat -c %s \"\$item\" 2>/dev/null)
+                fi
+
+                # Skip if we couldn't read the size
+                [[ -z \"\$bytes\" ]] && bytes=0
+
+                # Add to total
+                total_bytes=\$((total_bytes + bytes))
+                
+                # Convert to human-readable (Decimal)
+                human_size=\$(numfmt --to=si --suffix=B \"\$bytes\")
+                echo -e \"\$human_size\t\$item\" >> '$TMP_OUTPUT'
+            fi
+        done
+    done < '$LIST_FILE'
+    
+    # Store the total bytes in a separate temp file
+    echo \"\$total_bytes\" > '$TMP_TOTAL'
+"
+
+# Read the total from the subshell background process
+total_bytes=$(cat "$TMP_TOTAL")
 total_human=$(numfmt --to=si --suffix=B "$total_bytes")
 
-echo -e "------------------------------------------"
-echo -e "$total_human\t\tTOTAL COMBINED"
+# We pipe the gathered list through a clean read loop
+while IFS=$'\t' read -r size path; do
+  if [[ "$size" == "N/A" ]]; then
+    gum style --foreground 196 "✖ $size   $path"
+  else
+    printf "%-10s %s\n" "$(gum style --foreground 82 "$size")" "$path"
+  fi
+done <"$TMP_OUTPUT"
+
+echo "--------------------------------------------------"
+
+# Highlighting the total sum
+gum style \
+  --foreground 0 --background 99 \
+  --bold --padding "0 2" \
+  "TOTAL COMBINED: $total_human"

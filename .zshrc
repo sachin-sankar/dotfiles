@@ -20,7 +20,6 @@ eval "$(starship init zsh)"
 
 alias ls='lsd -a'
 alias l='ls'
-alias update='sh ~/scripts/update.sh'
 alias yd='yt-dlp --sponsorblock-remove sponsor -f "bestvideo[height<=1440]+bestaudio/best[height<=1440]" --embed-chapters'
 alias ydc='yt-dlp -f "bv*+ba/b" --cookies-from-browser firefox:~/.zen'
 alias markalldown='find . -maxdepth 1 -type f -exec bash -c '\''markitdown "$1" -o "${1%.*}.md"'\'' _ {} \;'

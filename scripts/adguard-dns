@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Ensure gum and networkmanager (nmcli) are installed
+if ! command -v gum &>/dev/null || ! command -v nmcli &>/dev/null; then
+  echo "Error: This script requires 'gum' and 'nmcli'. Please install them first."
+  exit 1
+fi
+
+# Visual Header
+gum style \
+  --foreground 212 --border-foreground 212 \
+  --border double --align center --width 50 \
+  "🛡️ AdGuard DNS Manager"
+
+# 1. Get the current active network connection
+CURRENT_CONN=$(nmcli -t -f NAME connection show --active | head -n 1)
+
+# Check if a connection was found
+if [ -z "$CURRENT_CONN" ]; then
+  gum style --foreground 196 "✖ No active network connection found!"
+  exit 1
+fi
+
+# Inform user of active connection
+gum style --foreground 99 "🔗 Active Connection Detected: $CURRENT_CONN"
+
+# 2. Let the user choose what to do (Interactive Menu)
+ACTION=$(gum choose "Apply AdGuard DNS" "Restore Default DHCP DNS" "Exit")
+
+if [ "$ACTION" == "Exit" ] || [ -z "$ACTION" ]; then
+  gum style --foreground 245 "Operation cancelled."
+  exit 0
+fi
+
+# 3. Apply AdGuard DNS
+if [ "$ACTION" == "Apply AdGuard DNS" ]; then
+  gum spin --spinner dot --title "Configuring AdGuard DNS rules..." -- bash -c "
+        # Set IPv4 DNS servers
+        nmcli connection modify '$CURRENT_CONN' ipv4.dns '94.140.15.15 94.140.14.14'
+        # Ignore auto DNS from DHCP for IPv4
+        nmcli connection modify '$CURRENT_CONN' ipv4.ignore-auto-dns yes
+        # Set IPv6 DNS servers
+        nmcli connection modify '$CURRENT_CONN' ipv6.dns '2a10:50c0::ad1:ff 2a10:50c0::ad2:ff'
+        # Ignore auto DNS from DHCP for IPv6
+        nmcli connection modify '$CURRENT_CONN' ipv6.ignore-auto-dns yes
+    "
+  gum style --foreground 82 "✔ AdGuard DNS parameters set successfully!"
+
+# 4. Restore Default DHCP DNS
+elif [ "$ACTION" == "Restore Default DHCP DNS" ]; then
+  gum spin --spinner dot --title "Restoring DHCP defaults..." -- bash -c "
+        # Clear DNS servers
+        nmcli connection modify '$CURRENT_CONN' ipv4.dns ''
+        nmcli connection modify '$CURRENT_CONN' ipv6.dns ''
+        # Stop ignoring auto DNS
+        nmcli connection modify '$CURRENT_CONN' ipv4.ignore-auto-dns no
+        nmcli connection modify '$CURRENT_CONN' ipv6.ignore-auto-dns no
+    "
+  gum style --foreground 82 "✔ Reverted to standard DHCP DNS successfully!"
+fi
+
+# 5. Restart the connection to apply changes
+# Note: Root/sudo privileges might be required for the down/up commands!
+if gum confirm "Network restart required to apply changes. Proceed?"; then
+  gum spin --spinner pulse --title "Cycling network interface..." -- bash -c "
+        nmcli connection down '$CURRENT_CONN' > /dev/null 2>&1
+        nmcli connection up '$CURRENT_CONN' > /dev/null 2>&1
+    "
+  gum style --foreground 82 "✔ Network connection cycled successfully."
+else
+  gum style --foreground 208 "⚠ Skipped network reload. Changes will take effect on next reconnect."
+  exit 0
+fi
+
+# 6. Verify and output the changes
+echo ""
+gum style --foreground 212 "🔍 Current active DNS configuration:"
+nmcli connection show "$CURRENT_CONN" | grep dns | gum format

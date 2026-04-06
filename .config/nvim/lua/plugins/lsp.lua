@@ -35,7 +35,6 @@ return {
         'golangci-lint',
         'markdownlint-cli2',
         'markdown-toc',
-        'oxfmt',
       },
     }
 

@@ -3,11 +3,6 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   opts = {
     enabled = true,
-    execution_message = {
-      message = function(time)
-        return ('AutoSave: saved at %s'):format(time)
-      end,
-    },
     conditions = {
       exists = true,
       filename_is_not = {},

@@ -14,35 +14,13 @@ local servers = {
   'oxlint',
   'tsgo',
   'tinymist',
-  'biome'
+  'biome',
 }
 
 return {
   'neovim/nvim-lspconfig',
   event = { 'BufReadPre', 'BufNewFile' },
-  dependencies = {
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-  },
   config = function()
-    require('mason').setup {
-      ensure_installed = {
-        'hadolint',
-        'goimports',
-        'gofumpt',
-        'gomodifytags',
-        'impl',
-        'golangci-lint',
-        'markdownlint-cli2',
-        'markdown-toc',
-      },
-    }
-
-    require('mason-lspconfig').setup {
-      ensure_installed = servers,
-      automatic_installation = true,
-    }
-
     local capabilities = require('blink.cmp').get_lsp_capabilities()
     capabilities.workspace = {
       fileOperations = {

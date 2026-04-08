@@ -22,3 +22,4 @@ vim.opt.cmdheight = 0
 vim.opt.termguicolors = true
 vim.g.termguicolors = true
 vim.opt.foldenable = false
+vim.opt.showtabline = 1

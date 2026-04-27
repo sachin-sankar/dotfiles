@@ -4,7 +4,7 @@ TARGET="http://1.1.1.1"
 
 if curl -s -f ipinfo.io | jq -e .ip > /dev/null; then
   # Online State
-  RESPONSE=$(curl -s ipinfo.io)
+  RESPONSE=$(curl -s -f --connect-timeout 3 ipinfo.io)
   IP=$(echo "$RESPONSE" | jq -r .ip)
   ICON=""
   STATE="connected"

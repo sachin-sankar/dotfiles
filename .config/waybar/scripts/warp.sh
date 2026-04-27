@@ -13,7 +13,7 @@ HEALTH=$(echo "$STATUS_RAW" | grep "Network" | awk '{print $2}')
 if [[ "$STATE" == "Connected" ]]; then
   ICON="󰅟" # Or use "VPN"
   CLASS="connected"
-  TEXT="WARP: $HEALTH"
+  TEXT="$HEALTH"
 elif [[ "$STATE" == "Connecting" ]]; then
   ICON="󰔪"
   CLASS="connecting"

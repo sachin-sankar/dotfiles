@@ -37,3 +37,6 @@ export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 export PATH="$PATH:$HOME/scripts"
 
 export GPG_TTY=$(tty)
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

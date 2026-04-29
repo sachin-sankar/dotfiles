@@ -1,11 +1,9 @@
 #!/bin/bash
 
-TARGET="http://1.1.1.1"
-
-if curl -s -f ipinfo.io | jq -e .ip > /dev/null; then
+if curl -s -f https://checkip.amazonaws.com -o /dev/null; then
   # Online State
-  RESPONSE=$(curl -s -f --connect-timeout 3 ipinfo.io)
-  IP=$(echo "$RESPONSE" | jq -r .ip)
+  IP=$(curl -s -f --connect-timeout 3 https://checkip.amazonaws.com)
+  
   ICON=""
   STATE="connected"
   TEXT=""

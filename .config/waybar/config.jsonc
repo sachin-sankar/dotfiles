@@ -2,41 +2,36 @@
   "layer": "top",
   "position": "top",
   "spacing": 12,
-  "modules-left": [
-    "custom/wmname",
-    "clock"
-  ],
-  "modules-center": [
-    "hyprland/workspaces"
-  ],
+  "modules-left": ["custom/wmname", "clock"],
+  "modules-center": ["hyprland/workspaces"],
   "modules-right": [
     "tray",
     "battery",
-    "power-profiles-daemon",
+    "custom/tuned",
     "custom/internet",
     "custom/warp",
     "memory",
     "backlight",
-    "pulseaudio",
+    "pulseaudio"
   ],
   "custom/wmname": {
     "format": " 󰣇 ",
     "tooltip": false,
-    "interval": "once",
+    "interval": "once"
   },
   "hyprland/workspaces": {
-    "on-click": "activate",
+    "on-click": "activate"
   },
   "tray": {
     "icon-size": 15,
-    "spacing": 6,
+    "spacing": 6
   },
   "clock": {
     "interval": 1,
     "locale": "C",
     "format": "󰥔 {:%I:%M %p}",
     "format-alt": " {:%a,%b %d}",
-    "tooltip": false,
+    "tooltip": false
   },
   "memory": {
     "interval": 2,
@@ -45,63 +40,39 @@
     "tooltip-format": "{used:0.2f}GB / {total:0.2f}GB",
     "warning": 70,
     "critical": 90,
-    "on-click": "kitty btop",
+    "on-click": "kitty btop"
   },
   "backlight": {
     "format": "{icon} {percent}%",
-    "format-icons": [
-      "󱩎",
-      "󱩏",
-      "󱩐",
-      "󱩑",
-      "󱩒",
-      "󱩓",
-      "󱩔",
-      "󱩕",
-      "󱩖",
-      "󰛨"
-    ],
+    "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"],
     "on-scroll-down": "brightnessctl -c backlight set 1%-",
     "on-scroll-up": "brightnessctl -c backlight set +1%",
     "on-click-right": "brightnessctl -c backlight set 0%",
-    "on-click-middle": "brightnessctl -c backlight set 100%",
+    "on-click-middle": "brightnessctl -c backlight set 100%"
   },
   "battery": {
     "states": {
       "good": 95,
       "warning": 30,
-      "critical": 15,
+      "critical": 15
     },
     "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
     "format-full": "󱟢",
-    "format-icons": [
-      "󰁺",
-      "󰁻",
-      "󰁼",
-      "󰁽",
-      "󰁾",
-      "󰁿",
-      "󰂀",
-      "󰂁",
-      "󰂂"
-    ],
-    "tooltip": false,
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
+    "tooltip": false
   },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "performance": "󰿗",
-      "balanced": "",
-      "power-saver": "",
-    },
+  "custom/tuned": {
+    "exec": "~/.config/waybar/scripts/tuned.sh",
+    "return-type": "json",
+    "interval": 2,
+    "format": "{text}",
+    "on-click": "~/.config/waybar/scripts/tuned.sh toggle"
   },
   "pulseaudio": {
     "format": " {volume}% ",
     "format-muted": " ",
-    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "custom/warp": {
     "format": "{}",
@@ -110,12 +81,12 @@
     "exec": "~/.config/waybar/scripts/warp.sh",
     "on-click": "warp-cli connect",
     "on-click-right": "warp-cli disconnect",
-    "tooltip": true,
+    "tooltip": true
   },
   "custom/internet": {
     "format": "{}",
     "return-type": "json",
     "interval": 5,
-    "exec": "~/.config/waybar/scripts/internet_status.sh",
-  },
+    "exec": "~/.config/waybar/scripts/internet_status.sh"
+  }
 }

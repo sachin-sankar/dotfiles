@@ -28,7 +28,7 @@ window#waybar {
 
 #custom-internet,
 #custom-warp,
-#power-profiles-daemon{
+#custom-tuned{
   padding-right: 5px;
 }
 
@@ -111,13 +111,9 @@ window#waybar {
   color: #fc0000;
 }
 
-#power-profiles-daemon.performance {
+#custom-tuned.performance {
   color: #da70d6;
 }
-#power-profiles-daemon.balanced {
-  color: #4fc3f7;
-  padding-right: 7px;
-}
-#power-profiles-daemon.power-saver {
+#custom-tuned.powersave {
   color: #4cbb17;
 }

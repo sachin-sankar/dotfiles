@@ -8,6 +8,8 @@ return {
 			"python",
 			"javascript",
 			"typescript",
+			"tsx",
+			"jsx",
 			"bash",
 			"json",
 			"markdown",

@@ -54,7 +54,7 @@ return {
 					components = {
 						kind_icon = {
 							text = function(ctx)
-								local kind_icon, kind_hl = get_mini_icon(ctx)
+								local kind_icon, _ = get_mini_icon(ctx)
 								return kind_icon
 							end,
 							-- (optional) use highlights from mini.icons

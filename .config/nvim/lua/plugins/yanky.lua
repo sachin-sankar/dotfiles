@@ -13,6 +13,10 @@ return {
 			on_yank = true,
 			timer = 150,
 		},
+		system_clipboard = {
+			sync_with_ring = true,
+			clipboard_register = nil,
+		},
 	},
 	keys = {
 		{ "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },

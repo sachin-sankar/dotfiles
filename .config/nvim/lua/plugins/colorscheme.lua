@@ -1,8 +1,1 @@
-return {
-  'EdenEast/nightfox.nvim',
-  lazy = false,
-  priority = 1000,
-  config = function()
-    vim.cmd.colorscheme 'carbonfox'
-  end,
-}
+return { { 'EdenEast/nightfox.nvim', }, { "folke/tokyonight.nvim" }, { "rebelot/kanagawa.nvim" }, { "olimorris/onedarkpro.nvim" } }

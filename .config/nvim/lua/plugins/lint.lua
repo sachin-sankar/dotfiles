@@ -4,20 +4,9 @@ return {
   config = function()
     local lint = require('lint')
 
-    lint.linters.biome = {
-      cmd = 'biome',
-      args = { 'check', '--formatter-enabled=false', '--linter-enabled=true', '--stdin-file-path', '$FILENAME', '-' },
-      stdin = true,
-    }
-
     lint.linters_by_ft = {
       python = { 'ruff' },
-      javascript = { 'biome' },
-      javascriptreact = { 'biome' },
-      typescript = { 'biome' },
-      typescriptreact = { 'biome' },
       dockerfile = { 'hadolint' },
-      markdown = { 'markdownlint-cli2' },
     }
 
     vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost' }, {

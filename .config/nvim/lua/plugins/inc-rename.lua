@@ -1,9 +1,16 @@
 return {
-  'smjonas/inc-rename.nvim',
-  config = function()
-    require('inc_rename').setup()
-  end,
-  keys = {
-    { '<leader>cn', function() return ':IncRename ' .. vim.fn.expand '<cword>' end, expr = true, desc = 'Incremental Rename' },
-  },
+	"smjonas/inc-rename.nvim",
+	config = function()
+		require("inc_rename").setup()
+	end,
+	keys = {
+		{
+			"<leader>cn",
+			function()
+				return ":IncRename " .. vim.fn.expand("<cword>")
+			end,
+			expr = true,
+			desc = "Incremental Rename",
+		},
+	},
 }

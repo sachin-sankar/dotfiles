@@ -1,7 +1,7 @@
 return {
-  'benomahony/uv.nvim',
-  ft = { 'python' },
-  config = function()
-    require('uv').setup()
-  end,
+	"benomahony/uv.nvim",
+	ft = { "python" },
+	config = function()
+		require("uv").setup()
+	end,
 }

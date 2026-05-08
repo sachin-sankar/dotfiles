@@ -6,24 +6,9 @@ return {
 		"neovim/nvim-lspconfig",
 	},
 	config = function()
-		local lsp_servers = {
-			"lua_ls",
-			"pyrefly",
-			"ruff",
-			"gopls",
-			"bashls",
-			"tinymist",
-			"jsonls",
-			"dockerls",
-			"docker_compose_language_service",
-			"ts_ls",
-			"vtsls",
-			"tsgo",
-			"tailwindcss",
-		}
-
+		local servers = require("lsp.servers")
 		require("mason-lspconfig").setup({
-			ensure_installed = lsp_servers,
+			ensure_installed = vim.list_extend({}, vim.tbl_keys(servers)),
 			automatic_installation = true,
 		})
 	end,

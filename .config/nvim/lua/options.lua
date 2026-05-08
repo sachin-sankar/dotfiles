@@ -23,6 +23,7 @@ vim.opt.timeoutlen = 100
 vim.g.termguicolors = true
 vim.opt.foldenable = false
 vim.opt.showtabline = 1
+vim.opt.cursorline = true
 
 vim.g.snacks_animate = true
 vim.opt.grepformat = "%f:%l:%c:%m"

@@ -23,6 +23,8 @@ return {
 			"ninja",
 			"rst",
 			"typst",
+			"yaml",
+			"toml",
 		},
 		highlight = { enable = true },
 		indent = { enable = true },

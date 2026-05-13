@@ -1,100 +1,77 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-LIST_FILE="$HOME/.resticinclude"
+import os
+import subprocess
+import tempfile
 
-# Ensure gum and numfmt are installed
-if ! command -v gum &>/dev/null || ! command -v numfmt &>/dev/null; then
-  echo "Error: This script requires 'gum' and 'numfmt' (coreutils)."
-  exit 1
-fi
+LIST_FILE = os.path.expanduser("~/.resticinclude")
+TEMP_OUTPUT = tempfile.NamedTemporaryFile(delete=False)
+TEMP_TOTAL = tempfile.NamedTemporaryFile(delete=False)
 
-# Create temporary files for handling the spin background subshell
-TMP_OUTPUT=$(mktemp)
-TMP_TOTAL=$(mktemp)
+def path_size(path):
+    """Calculate size of path."""
+    try:
+        if os.path.isdir(path):
+            result = subprocess.run(['du', '-sb', path], capture_output=True, text=True, check=True)
+            return int(result.stdout.split()[0])
+        elif os.path.isfile(path):
+            return os.path.getsize(path)
+        else:
+            return None
+    except Exception:
+        return None
 
-# Cleanup trap: Ensures temp files are deleted even if the script is interrupted
-cleanup() {
-  rm -f "$TMP_OUTPUT" "$TMP_TOTAL"
-}
-trap cleanup EXIT
+def analyze_sizes():
+    """Analyze paths in include file."""
+    total_size = 0
+    with open(LIST_FILE, 'r') as file, open(TEMP_OUTPUT.name, 'w') as output:
+        for raw_pattern in file:
+            pattern = raw_pattern.strip()
+            if not pattern or pattern.startswith('#'):
+                continue  # Skip empty/commented lines
 
-# Check if configuration file exists
-if [[ ! -f "$LIST_FILE" ]]; then
-  gum style --foreground 208 "⚠ Configuration file '$LIST_FILE' not found."
+            expanded = subprocess.run(['bash', '-c', f"echo {pattern}"], capture_output=True, text=True).stdout.splitlines()
+            matched = [p for p in expanded if os.path.exists(p)]
 
-  # Interactive fallback: Ask to create it!
-  if gum confirm "Would you like to create a template file now?"; then
-    echo "# Add files, directories, or patterns to back up" >"$LIST_FILE"
-    echo "$HOME/Documents" >>"$LIST_FILE"
-    echo "$HOME/.config" >>"$LIST_FILE"
-    echo "$HOME/*.pdf" >>"$LIST_FILE"
-    gum style --foreground 82 "✔ Created $LIST_FILE with example paths."
-  else
-    exit 1
-  fi
-fi
+            if not matched:
+                output.write(f"N/A\t{pattern} (No Matches)\n")
+                continue
 
-# Use gum spin to show a loading state while processing files
-gum spin --spinner line --title "Analyzing file sizes..." -- bash -c "
-    total_bytes=0
-    
-    while IFS= read -r pattern || [[ -n \"\$pattern\" ]]; do
-        # Skip empty lines or comments
-        [[ -z \"\$pattern\" || \"\$pattern\" =~ ^# ]] && continue
+            for path in matched:
+                size = path_size(path)
+                if size is not None:
+                    total_size += size
+                    human_size = subprocess.run(['numfmt', '--to=si', '--suffix=B', str(size)], capture_output=True, text=True).stdout.strip()
+                    output.write(f"{human_size}\t{path}\n")
+                else:
+                    output.write(f"N/A\t{path} (Unreadable/Skipped)\n")
 
-        # Expand the glob pattern (e.g., handles wildcards like *.pdf)
-        # We use a subshell to prevent glob failures from killing the script
-        matched_items=(\$pattern)
-        
-        # If the pattern didn't match anything and still contains a wildcard, skip it
-        if [[ \"\${matched_items[0]}\" == \"\$pattern\" && ! -e \"\$pattern\" ]]; then
-             echo -e \"N/A\t\$pattern (No Matches)\" >> '$TMP_OUTPUT'
-             continue
-        fi
+    with open(TEMP_TOTAL.name, 'w') as total_file:
+        total_file.write(str(total_size))
 
-        for item in \"\${matched_items[@]}\"; do
-            if [[ -e \"\$item\" ]]; then
-                # Get bytes
-                if [[ -d \"\$item\" ]]; then
-                    bytes=\$(du -sb \"\$item\" 2>/dev/null | cut -f1)
-                else
-                    bytes=\$(stat -c %s \"\$item\" 2>/dev/null)
-                fi
+def read_summary():
+    """Display size summary."""
+    with open(TEMP_OUTPUT.name, 'r') as output, open(TEMP_TOTAL.name, 'r') as total_file:
+        for line in output:
+            size, path = line.strip().split('\t')
+            if size == "N/A":
+                print(f"✖ {path}")
+            else:
+                print(f"{size} {path}")
+        print("--------------------------------------------------")
+        total_human = subprocess.run(['numfmt', '--to=si', '--suffix=B', str(total_file.read().strip())], capture_output=True, text=True).stdout.strip()
+        print(f"TOTAL COMBINED: {total_human}")
 
-                # Skip if we couldn't read the size
-                [[ -z \"\$bytes\" ]] && bytes=0
+if __name__ == "__main__":
+    if not os.path.exists(LIST_FILE):
+        print(f"⚠ Configuration file '{LIST_FILE}' not found.")
+        print("Would you like to create a template file now? (y/n): ", end="")
+        if input().lower() == 'y':
+            with open(LIST_FILE, 'w') as tmpl:
+                tmpl.writelines(["# Add files, directories, or patterns to back up\n", "~/Documents\n", "~/.config\n", "~/example/*.pdf\n"])
+            print(f"✔ Created {LIST_FILE} with example paths.")
+        else:
+            exit(1)
 
-                # Add to total
-                total_bytes=\$((total_bytes + bytes))
-                
-                # Convert to human-readable (Decimal)
-                human_size=\$(numfmt --to=si --suffix=B \"\$bytes\")
-                echo -e \"\$human_size\t\$item\" >> '$TMP_OUTPUT'
-            fi
-        done
-    done < '$LIST_FILE'
-    
-    # Store the total bytes in a separate temp file
-    echo \"\$total_bytes\" > '$TMP_TOTAL'
-"
-
-# Read the total from the subshell background process
-total_bytes=$(cat "$TMP_TOTAL")
-total_human=$(numfmt --to=si --suffix=B "$total_bytes")
-
-# We pipe the gathered list through a clean read loop
-while IFS=$'\t' read -r size path; do
-  if [[ "$size" == "N/A" ]]; then
-    gum style --foreground 196 "✖ $size   $path"
-  else
-    printf "%-10s %s\n" "$(gum style --foreground 82 "$size")" "$path"
-  fi
-done <"$TMP_OUTPUT"
-
-echo "--------------------------------------------------"
-
-# Highlighting the total sum
-gum style \
-  --foreground 0 --background 99 \
-  --bold --padding "0 2" \
-  "TOTAL COMBINED: $total_human"
+    analyze_sizes()
+    read_summary()

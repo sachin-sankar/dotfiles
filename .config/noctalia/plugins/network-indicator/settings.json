@@ -1,0 +1,21 @@
+{
+  "arrowType": "chevron",
+  "byteThresholdActive": 5000,
+  "fontSizeModifier": 0.75,
+  "iconSizeModifier": 1,
+  "showNumbers": false,
+  "spacingInbetween": -3,
+  "useCustomColors": false,
+  "useCustomFont": false,
+  "customFontBold": false,
+  "customFontItalic": false,
+  "horizontalLayout": false,
+  "contentMargin": 2,
+  "customFontFamily": "",
+  "colorSilent": "#16134f",
+  "colorTx": "#bc8cff",
+  "colorRx": "#58a6ff",
+  "colorText": "#4d8b949e",
+  "colorFont": "#c9d1d9",
+  "colorBackground": "#00000000"
+}

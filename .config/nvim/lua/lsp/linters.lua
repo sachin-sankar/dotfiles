@@ -4,4 +4,3 @@ return {
 	typescript = { "oxlint" },
 	yaml = { "yamllint" },
 }
-

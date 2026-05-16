@@ -30,10 +30,20 @@ return {
 	jsonls = {},
 	dockerls = {},
 	docker_compose_language_service = {},
-	ts_ls = {},
 	vtsls = {},
 	tailwindcss = {
-		filetypes = { "css", "scss", "less", "html", "handlebars", "twig", "jsx", "tsx", "svelte", "vue" },
+		filetypes = {
+			"css",
+			"scss",
+			"less",
+			"html",
+			"handlebars",
+			"twig",
+			"javascriptreact",
+			"typescriptreact",
+			"svelte",
+			"vue",
+		},
 		settings = {
 			tailwindCSS = {
 				includeLanguages = {
@@ -46,4 +56,3 @@ return {
 	},
 	yamlls = {},
 }
-

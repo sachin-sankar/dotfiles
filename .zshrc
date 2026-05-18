@@ -24,6 +24,8 @@ alias yd='yt-dlp --sponsorblock-remove sponsor -f "bestvideo[height<=1440]+besta
 alias ydc='yt-dlp -f "bv*+ba/b" --cookies-from-browser firefox:~/.zen'
 alias markalldown='find . -maxdepth 1 -type f -exec bash -c '\''markitdown "$1" -o "${1%.*}.md"'\'' _ {} \;'
 alias n='nvim'
+alias pdf='zathura --fork'
+alias y='yazi'
 
 
 export PNPM_HOME="$HOME/.local/share/pnpm"

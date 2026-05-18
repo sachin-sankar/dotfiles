@@ -533,7 +533,7 @@
             1,
             2
         ],
-        "location": "bottom",
+        "location": "top",
         "monitors": [
         ],
         "overlayLayer": true

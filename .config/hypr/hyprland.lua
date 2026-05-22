@@ -229,7 +229,7 @@ hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("qs -c noctalia-shell ipc call s
 hl.bind(mainMod .. " + X", hl.dsp.dpms("toggle"))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("lutris"))
 
-hl.bind("Print", hl.dsp.exec_cmd("qs -c noctalia-shell ipc call plugin:screen-shot-and-record screenshot"))
+hl.bind("Print", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + U", hl.dsp.window.fullscreen())
 
 -- Move focus with mainMod + arrow keys

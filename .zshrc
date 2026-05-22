@@ -18,6 +18,33 @@ fi
 
 eval "$(starship init zsh)"
 
+# Automatically create or attach to a tmux session based on the current folder
+t() {
+    # Get the name of the current directory (slashes removed)
+    local session_name=$(basename "$PWD" | tr '.' '_')
+    
+    # -A: Attach if exists, create if not
+    # -s: Name the session after the folder
+    # -c: Force new windows to open in this exact path
+    tmux new -A -s "$session_name" -c "$PWD"
+}
+
+# Fuzzy find and attach to any running tmux session
+tt() {
+    local session
+    # 1. List all sessions (just their names)
+    # 2. Pass to fzf with a clean header
+    # 3. Attach to the selected target
+    session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --reverse --header 'Select Tmux Session to Attach:')
+    
+    # If a session was chosen, attach to it
+    if [[ -n "$session" ]]; then
+        tmux attach -t "$session"
+    else
+        echo "No session selected."
+    fi
+}
+
 alias ls='lsd -a'
 alias l='ls'
 alias yd='yt-dlp --sponsorblock-remove sponsor -f "bestvideo[height<=1440]+bestaudio/best[height<=1440]" --embed-chapters'

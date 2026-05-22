@@ -180,14 +180,6 @@
                     "textColor": "none"
                 },
                 {
-                    "defaultSettings": {
-                        "connectedColor": "primary",
-                        "disconnectedColor": "none",
-                        "refreshInterval": 5000
-                    },
-                    "id": "plugin:cloudflare-warp"
-                },
-                {
                     "deviceNativePath": "BAT0",
                     "displayMode": "graphic",
                     "hideIfIdle": false,
@@ -209,18 +201,6 @@
                     "iconColor": "none",
                     "id": "Brightness",
                     "textColor": "none"
-                },
-                {
-                    "defaultSettings": {
-                        "enableCross": true,
-                        "enableWindowsSelection": true,
-                        "keepSourceScreenshot": false,
-                        "recordingNotifications": true,
-                        "recordingSavePath": "~/Videos",
-                        "savePath": "~/Pictures/Screenshots",
-                        "screenshotEditor": "swappy"
-                    },
-                    "id": "plugin:screen-shot-and-record"
                 }
             ]
         }

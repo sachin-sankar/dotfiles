@@ -6,6 +6,6 @@ if gum confirm "Update pacman Mirrors?"; then
 fi
 
 paru -Suuy --sudoloop --upgrademenu --combinedupgrade --noconfirm
-pnpm -g upgrade && pnpm -g update
+pnpm -g update
 uv tool upgrade --all
 nvim --headless "+Lazy! update" +qa

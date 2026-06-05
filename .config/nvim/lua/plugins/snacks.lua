@@ -7,15 +7,6 @@ return {
 		dashboard = {
 			enabled = true,
 			preset = {
-				pick = function(cmd, _)
-					if cmd == "files" then
-						require("fff").find_files()
-					elseif cmd == "live_grep" then
-						require("fff").live_grep()
-					elseif cmd == "oldfiles" then
-						require("fff").find_files({ cwd = "recent" })
-					end
-				end,
 				header = [[
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣦⡀⠀⢸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -42,7 +33,7 @@ return {
 						key = "f",
 						desc = "Find File",
 						action = function()
-							require("fff").find_files()
+							Snacks.picker.files()
 						end,
 					},
 					{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
@@ -51,7 +42,7 @@ return {
 						key = "g",
 						desc = "Find Text",
 						action = function()
-							require("fff").live_grep()
+							Snacks.picker.grep()
 						end,
 					},
 					{
@@ -59,7 +50,7 @@ return {
 						key = "r",
 						desc = "Recent Files",
 						action = function()
-							require("fff").find_files({ cwd = "recent" })
+							Snacks.picker.recent()
 						end,
 					},
 					{
@@ -67,7 +58,7 @@ return {
 						key = "c",
 						desc = "Config",
 						action = function()
-							require("fff").find_files({
+							Snacks.picker.files({
 								cwd = vim.fn.stdpath("config"),
 							})
 						end,
@@ -117,6 +108,49 @@ return {
 		},
 	},
 	keys = {
+		-- find (fff replacements)
+		{
+			"ff",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"fg",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Live Grep",
+		},
+		{
+			"fz",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Fuzzy Grep",
+		},
+		{
+			"fc",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Search Current Word",
+		},
+		{
+			"<leader><space>",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find Files",
+		},
+		{
+			"<leader>/",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
 		{
 			"<leader>,",
 			function()

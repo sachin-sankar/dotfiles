@@ -53,17 +53,14 @@ alias markalldown='find . -maxdepth 1 -type f -exec bash -c '\''markitdown "$1" 
 alias n='nvim'
 alias pdf='zathura --fork'
 alias y='yazi'
+alias dnd='kitten dnd'
 
-
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
 
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 export PATH="$PATH:$HOME/scripts"
+export PATH="$PATH:$HOME/.local/share/pnpm/bin"
+export PATH="/home/sachin/.local/bin:$PATH"
 
 export GPG_TTY=$(tty)
 

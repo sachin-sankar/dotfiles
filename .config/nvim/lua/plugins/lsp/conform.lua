@@ -11,4 +11,3 @@ return {
 		formatters_by_ft = require("lsp.formatters"),
 	},
 }
-

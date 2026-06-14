@@ -16,38 +16,10 @@ hl.monitor({
 
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 hl.on("hyprland.start", function()
-	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=Hyprland")
 	hl.exec_cmd("wl-paste --watch cliphist store")
-	hl.exec_cmd("GTK_THEME=Adwaita:dark /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
+	hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 	hl.exec_cmd("qs -c noctalia-shell")
 end)
-
--------------------------------
----- ENVIRONMENT VARIABLES ----
--------------------------------
-
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
-
--- Backend and Toolkit Settings
-hl.env("GDK_BACKEND", "wayland,x11,*")
-hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-hl.env("SDL_VIDEODRIVER", "wayland")
-hl.env("CLUTTER_BACKEND", "wayland")
-hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
-hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
-hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
-
--- XDG Specifications
-hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
-hl.env("XDG_SESSION_TYPE", "wayland")
-hl.env("XDG_SESSION_DESKTOP", "Hyprland")
-
--- Theme
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
-
--- Custom Paths
-hl.env("HYPRSHOT_DIR", "/home/sachin/Pictures/")
 
 -----------------------
 ---- LOOK AND FEEL ----
@@ -218,7 +190,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. " + K", hl.dsp.window.kill())
-hl.bind(mainMod .. " + Q", hl.dsp.exit())
+hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("uwsm stop"))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("nautilus"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("qs -c noctalia-shell ipc call launcher toggle"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("zen-browser"))
@@ -228,6 +200,17 @@ hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("obsidian %U"))
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("qs -c noctalia-shell ipc call sessionMenu toggle"))
 hl.bind(mainMod .. " + X", hl.dsp.dpms("toggle"))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("lutris"))
+
+hl.bind(mainMod .. " + S", hl.dsp.submap("swap_window"))
+hl.define_submap("swap_window", function()
+	hl.bind("left", hl.dsp.window.swap({ direction = "left" }))
+	hl.bind("right", hl.dsp.window.swap({ direction = "right" }))
+	hl.bind("up", hl.dsp.window.swap({ direction = "up" }))
+	hl.bind("down", hl.dsp.window.swap({ direction = "down" }))
+
+	hl.bind("Escape", hl.dsp.submap("reset"))
+	hl.bind("Return", hl.dsp.submap("reset"))
+end)
 
 hl.bind("Print", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + U", hl.dsp.window.fullscreen())
@@ -247,8 +230,8 @@ for i = 1, 10 do
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + D", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))

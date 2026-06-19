@@ -19,13 +19,13 @@
         "overviewLayer": false,
         "pinnedApps": [
         ],
-        "position": "center",
+        "position": "bottom_center",
         "screenshotAnnotationTool": "satty",
         "showCategories": true,
         "showIconBackground": false,
         "sortByMostUsed": true,
         "terminalCommand": "kitty -e",
-        "viewMode": "list"
+        "viewMode": "grid"
     },
     "audio": {
         "mprisBlacklist": [
@@ -525,7 +525,7 @@
     "sessionMenu": {
         "countdownDuration": 10000,
         "enableCountdown": false,
-        "largeButtonsLayout": "grid",
+        "largeButtonsLayout": "single-row",
         "largeButtonsStyle": true,
         "position": "center",
         "powerOptions": [

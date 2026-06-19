@@ -191,7 +191,7 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. " + K", hl.dsp.window.kill())
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("uwsm stop"))
-hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("nautilus"))
+hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("dolphin"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("qs -c noctalia-shell ipc call launcher toggle"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("zen-browser"))
 hl.bind(mainMod .. " + P", hl.dsp.window.float({ action = "toggle" }))
